@@ -55,7 +55,7 @@ const DatabaseInitializer: React.FC<DatabaseInitializerProps> = ({ children }) =
           <div className="text-red-500 text-4xl mb-4">⚠️</div>
           <h2 className="text-xl font-semibold text-gray-700 mb-2">Connection Error</h2>
           <p className="text-gray-500 mb-4">{error}</p>
-          <p className="text-sm text-gray-400 mb-4">Make sure the backend server is running on port 3001</p>
+          <p className="text-sm text-gray-400 mb-4">Make sure the backend server is running at https://pg-backend-tg12.onrender.com</p>
           <button 
             onClick={() => window.location.reload()} 
             className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 transition-colors"
