@@ -1,35 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { Check, Filter, Search } from 'lucide-react';
 import { RoomService } from '../services/roomService';
-import { TenantService } from '../services/tenantService';
+// import { TenantService } from '../services/tenantService';
 
 const Rooms: React.FC = () => {
   const [priceRange, setPriceRange] = useState([5000, 25000]);
   const [roomType, setRoomType] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [rooms, setRooms] = useState<any[]>([]);
-  const [tenants, setTenants] = useState<any[]>([]);
+  // Removed tenants state as it is no longer used.
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchData() {
       setLoading(true);
       const roomRes = await RoomService.getAllRooms();
-      const tenantRes = await TenantService.getAllTenants();
   if (roomRes.success) setRooms(roomRes.data || []);
-  if (tenantRes.success) setTenants(tenantRes.data || []);
       setLoading(false);
     }
     fetchData();
   }, []);
 
-  // Attach tenant info to rooms
-  const roomsWithTenant = rooms.map(room => {
-    const tenant = tenants.find(t => t.roomId?._id === room._id);
-    return { ...room, tenant };
-  });
-
-  const filteredRooms = roomsWithTenant.filter(room => {
+  const filteredRooms = rooms.filter(room => {
     const matchesPrice = room.rent >= priceRange[0] && room.rent <= priceRange[1];
     const matchesType = roomType === 'all' || room.type.toLowerCase().includes(roomType.toLowerCase());
     const matchesSearch = room.type.toLowerCase().includes(searchTerm.toLowerCase()) ||

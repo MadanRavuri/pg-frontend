@@ -1,12 +1,12 @@
 import React, { createContext, useContext, ReactNode } from 'react';
-import { TenantService } from '../services/tenantService';
+// import { TenantService } from '../services/tenantService';
 import { RoomService } from '../services/roomService';
 import { RentPaymentService } from '../services/rentPaymentService';
 import { ExpenseService } from '../services/expenseService';
 import { SettingsService } from '../services/settingsService';
 
 interface DatabaseContextType {
-  tenantService: typeof TenantService;
+  // tenantService: typeof TenantService;
   roomService: typeof RoomService;
   rentPaymentService: typeof RentPaymentService;
   expenseService: typeof ExpenseService;
@@ -29,7 +29,7 @@ interface DatabaseProviderProps {
 
 export const DatabaseProvider: React.FC<DatabaseProviderProps> = ({ children }) => {
   const value: DatabaseContextType = {
-    tenantService: TenantService,
+  // tenantService: TenantService,
     roomService: RoomService,
     rentPaymentService: RentPaymentService,
     expenseService: ExpenseService,
