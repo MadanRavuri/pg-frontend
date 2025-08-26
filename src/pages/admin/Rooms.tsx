@@ -126,16 +126,22 @@ const Rooms: React.FC = () => {
         // Transform the data to match the frontend interface
         const transformedRooms = response.data.map((room: any) => {
           const capacity = room.capacity ?? (room.type === 'single' ? 1 : room.type === 'double' ? 2 : 3);
-          const currentOccupancy = Array.isArray(room.tenants) ? room.tenants.length : (room.tenantId ? 1 : 0);
+          // Count number of active tenants assigned to this room
+          let currentOccupancy = 0;
+          if (Array.isArray(room.tenants)) {
+            currentOccupancy = room.tenants.filter((t: any) => t.status === 'active').length;
+          } else if (room.tenantId && room.tenantId.status === 'active') {
+            currentOccupancy = 1;
+          } else if (room.tenantId) {
+            currentOccupancy = 1;
+          }
           // Status logic: occupied only if full, else available
           const status = currentOccupancy >= capacity ? 'occupied' : 'available';
-          // If the room has a tenant assigned, mark as occupied
-          const isOccupied = room.tenantId ? true : currentOccupancy >= capacity;
           return {
             ...room,
             currentOccupancy,
             capacity,
-            status: isOccupied ? 'occupied' : 'available',
+            status,
           };
         });
         // Sort rooms by roomNumber (assuming numeric)

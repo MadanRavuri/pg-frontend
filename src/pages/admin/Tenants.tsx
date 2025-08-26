@@ -54,9 +54,22 @@ const Tenants: React.FC = () => {
 
   // Get selected view (dashboard, wingA, wingB)
   const { view } = useAdminView();
-  
 
+  // Helper: calculate current occupancy for a room
+  const getCurrentOccupancy = (roomId: string) => {
+    return tenants.filter(
+      t => (typeof t.roomId === 'object' ? t.roomId._id : t.roomId) === roomId && t.status === 'active'
+    ).length;
+  };
 
+  // Helper: get capacity for a room (fallback to type if missing)
+  const getRoomCapacity = (room: Room) => {
+    if ((room as any).capacity !== undefined) return (room as any).capacity;
+    if ((room as any).type === 'single') return 1;
+    if ((room as any).type === 'double') return 2;
+    if ((room as any).type === 'triple') return 3;
+    return 1;
+  };
     // Form state
     const [tenantForm, setTenantForm] = useState({
       name: '',
@@ -629,11 +642,20 @@ const Tenants: React.FC = () => {
                       required
                     >
                       <option value="">Select Room</option>
-                      {rooms.filter(room => room.status === 'available' || (isEditing && tenantForm.roomId === room._id)).map(room => (
-                        <option key={room._id} value={room._id}>
-                          Room {room.roomNumber} - {room.floor} Floor - Wing {room.wing}
-                        </option>
-                      ))}
+                      {rooms.filter(room => {
+                        const capacity = getRoomCapacity(room);
+                        const occupancy = getCurrentOccupancy(room._id);
+                        // Show if not full, or if editing and this is the current room
+                        return (occupancy < capacity) || (isEditing && tenantForm.roomId === room._id);
+                      }).map(room => {
+                        const capacity = getRoomCapacity(room);
+                        const occupancy = getCurrentOccupancy(room._id);
+                        return (
+                          <option key={room._id} value={room._id}>
+                            Room {room.roomNumber} - {room.floor} Floor - Wing {room.wing} (Occupied: {occupancy}/{capacity})
+                          </option>
+                        );
+                      })}
                     </select>
                   </div>
                   <div>

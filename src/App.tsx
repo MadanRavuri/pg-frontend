@@ -62,11 +62,9 @@ function App() {
                 {/* Admin Routes */}
                 <Route path="/admin/login" element={<Login />} />
                 <Route path="/admin" element={
-                  <ProtectedRoute>
-                    <DataRefreshProvider>
-                      <AdminLayout />
-                    </DataRefreshProvider>
-                  </ProtectedRoute>
+                  <DataRefreshProvider>
+                    <AdminLayout />
+                  </DataRefreshProvider>
                 }>
                   <Route index element={<Dashboard />} />
                   <Route path="dashboard" element={<Dashboard />} />
