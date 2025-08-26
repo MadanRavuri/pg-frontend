@@ -178,4 +178,4 @@ export class TenantService {
       return { success: false, error: 'Failed to fetch tenant statistics' };
     }
   }
-} 
+// Removed: This file contained backend logic and should not be in the frontend repo.

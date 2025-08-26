@@ -1,3 +1,4 @@
+// Removed: This file contained backend logic and should not be in the frontend repo.
 import { RentPayment, IRentPayment } from '../models/RentPayment';
 import { Tenant } from '../models/Tenant';
 import { Room } from '../models/Room';
