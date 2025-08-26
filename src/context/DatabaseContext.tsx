@@ -1,17 +1,9 @@
 import React, { createContext, useContext, ReactNode } from 'react';
 // import { TenantService } from '../services/tenantService';
-import { RoomService } from '../services/roomService';
-import { RentPaymentService } from '../services/rentPaymentService';
-import { ExpenseService } from '../services/expenseService';
-import { SettingsService } from '../services/settingsService';
 
-interface DatabaseContextType {
-  // tenantService: typeof TenantService;
-  roomService: typeof RoomService;
-  rentPaymentService: typeof RentPaymentService;
-  expenseService: typeof ExpenseService;
-  settingsService: typeof SettingsService;
-}
+
+// No backend services, so DatabaseContextType is an empty object for now
+type DatabaseContextType = {};
 
 const DatabaseContext = createContext<DatabaseContextType | undefined>(undefined);
 
@@ -29,11 +21,7 @@ interface DatabaseProviderProps {
 
 export const DatabaseProvider: React.FC<DatabaseProviderProps> = ({ children }) => {
   const value: DatabaseContextType = {
-  // tenantService: TenantService,
-    roomService: RoomService,
-    rentPaymentService: RentPaymentService,
-    expenseService: ExpenseService,
-    settingsService: SettingsService,
+    // Only API-based services should be provided here.
   };
 
   return (
